@@ -14,7 +14,6 @@ class App extends StatelessWidget {
       title: 'Bitcoin Ticker',
       theme: ThemeData(
         primaryColor: kPrimaryColor,
-        scaffoldBackgroundColor: kPrimaryColor,
       ),
       home: MainScreen(),
     );

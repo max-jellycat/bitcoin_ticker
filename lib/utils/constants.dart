@@ -5,11 +5,9 @@ const kAccentColor = Color(0xFFFFEAA7);
 const kPrimaryColor = Color(0xFFFDCB6E);
 
 const kAppBarTextStyle = TextStyle(
-  color: kTextColor,
   fontWeight: FontWeight.bold,
 );
 
 const kCardTextStyle = TextStyle(
-  color: kTextColor,
   fontSize: 20.0,
 );
