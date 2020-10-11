@@ -1,5 +1,7 @@
-import 'package:bitcoin_ticker/utils/coin_data.dart';
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:bitcoin_ticker/utils/coin_data.dart';
 import 'package:bitcoin_ticker/utils/constants.dart';
 import 'package:bitcoin_ticker/widgets/box.dart';
 
@@ -17,19 +19,54 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  List<DropdownMenuItem> getCurrencies() {
-    List<DropdownMenuItem<String>> currencies = [];
+  DropdownButton<String> renderAndroidDropdown() {
+    List<DropdownMenuItem<String>> items = [];
 
     for (String currency in currenciesList) {
-      currencies.add(
-        DropdownMenuItem<String>(
-          child: Text(currency),
-          value: currency,
-        ),
-      );
+      items.add(DropdownMenuItem<String>(
+        child: Text(currency),
+        value: currency,
+      ));
     }
 
-    return currencies;
+    return DropdownButton<String>(
+      value: this.selectedCurrency,
+      items: items,
+      onChanged: (value) {
+        setState(() {
+          this.selectedCurrency = value;
+        });
+      },
+    );
+  }
+
+  CupertinoPicker renderIOSPicker() {
+    List<Text> items = [];
+
+    for (String currency in currenciesList) {
+      items.add(Text(currency));
+    }
+
+    return CupertinoPicker(
+      backgroundColor: kPrimaryColor,
+      itemExtent: 32.0,
+      children: items,
+      onSelectedItemChanged: (index) {
+        setState(() {
+          this.selectedCurrency = currenciesList[index];
+        });
+      },
+    );
+  }
+
+  Widget renderPlatformPicker() {
+    if (Platform.isIOS) {
+      return this.renderIOSPicker();
+    } else if (Platform.isAndroid) {
+      return this.renderAndroidDropdown();
+    }
+
+    return null;
   }
 
   @override
@@ -61,11 +98,7 @@ class _MainScreenState extends State<MainScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: kPrimaryColor,
-            child: DropdownButton<String>(
-              value: this.selectedCurrency,
-              items: getCurrencies(),
-              onChanged: onCurrencyChanged,
-            ),
+            child: this.renderPlatformPicker(),
           )
         ],
       ),
