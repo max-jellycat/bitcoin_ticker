@@ -59,16 +59,6 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget renderPlatformPicker() {
-    if (Platform.isIOS) {
-      return this.renderIOSPicker();
-    } else if (Platform.isAndroid) {
-      return this.renderAndroidDropdown();
-    }
-
-    return null;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,7 +88,9 @@ class _MainScreenState extends State<MainScreen> {
             alignment: Alignment.center,
             padding: EdgeInsets.only(bottom: 30.0),
             color: kPrimaryColor,
-            child: this.renderPlatformPicker(),
+            child: Platform.isIOS
+                ? this.renderIOSPicker()
+                : this.renderAndroidDropdown(),
           )
         ],
       ),
